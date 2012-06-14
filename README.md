@@ -3,6 +3,15 @@ pyASTD
 
 This module allows to model ASTD using Python3 and export to B
 
+You need Python3 to use this module, go to http://python.org/ and download pyhton 3.x
+
+Contact jeremilhau@gmail.com if needed.
+
+Files
+=====
+
+
+
 ./README.md                 This File!
 
 ./ASTD-techreport-v2.pdf    The technical report that details the ASTD notation
@@ -16,6 +25,8 @@ This module allows to model ASTD using Python3 and export to B
 ./src/cho.py                Test file for choice ASTD export in B
 
 ./src/seq.py                Test file for sequence ASTD export in B
+
+...
 
 ./src/astd/                 This dir is a Python module, "import astd" to use in Python3
                             
