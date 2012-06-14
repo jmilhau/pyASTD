@@ -1,6 +1,6 @@
 from .astd import *
 
-class Choice(ASTD):
+class Synchronization(ASTD):
     """An Synchronization ASTD class"""    
     _t = "syn"
         
@@ -19,7 +19,6 @@ class Choice(ASTD):
         """ Returns a dictionary mapping variables to initial state values """
         r = {}
         r = dict(list(self.b.getInit().items()) + list(self.c.getInit().items()))
-
         return r
 
     def getBfinal(self) :
@@ -44,6 +43,66 @@ class Choice(ASTD):
         machine['INITIALISATION'] = subB['INITIALISATION'] + subC['INITIALISATION']
         machine['OPERATIONS'] =  {}  
         
+        Bops = set(list(subB['OPERATIONS'].keys()))
+        Cops = set(list(subC['OPERATIONS'].keys()))
+        BCops = Bops & Cops
+        
+        set1 = self.delta & BCops
+        set2 = self.delta - BCops
+        set3 = (Bops | Cops) - self.delta
+        
+        for sigma in set1 :
+            op = {}
+            op['param'] = subB['OPERATIONS'][sigma]['param']   
+            op['name'] = sigma
+            op['PRE'] = []
+            op['THEN'] = []
+            pre = "( " + getPre(subB['OPERATIONS'][sigma]['PRE']) + " ) &\n( " + getPre(subC['OPERATIONS'][sigma]['PRE']) + " )"
+            then = getThen(subB['OPERATIONS'][sigma]['THEN'])+" ||\n"+getThen(subC['OPERATIONS'][sigma]['THEN'])            
+            op['PRE'].append(pre) 
+            op['THEN'].append((pre,then))                        
+            machine['OPERATIONS'][sigma] = op 
+            
+        for sigma in set2 :
+            op = {}
+            if sigma in Bops :
+                op['param'] = subB['OPERATIONS'][sigma]['param']  
+            else :
+                op['param'] = subC['OPERATIONS'][sigma]['param']              
+            op['name'] = sigma
+            op['PRE'] = ["false"]
+            op['THEN'] = [("false","skip")]
+            machine['OPERATIONS'][sigma] = op
+            
+        for sigma in set3 :
+            op = {}
+            op['name'] = sigma
+            op['PRE'] = []
+            op['THEN'] = []
+            if sigma in BCops :
+                op['param'] = subB['OPERATIONS'][sigma]['param']
+                pre1 = "( " + getPre(subB['OPERATIONS'][sigma]['PRE']) + " )" 
+                pre2 = "( " + getPre(subC['OPERATIONS'][sigma]['PRE']) + " )"
+                then1 = getThen(subB['OPERATIONS'][sigma]['THEN'])
+                then2 = getThen(subC['OPERATIONS'][sigma]['THEN'])
+                op['PRE'].append(pre1) 
+                op['PRE'].append(pre2)
+                op['THEN'].append((pre1,then1))                        
+                op['THEN'].append((pre2,then2))                        
+            elif sigma in Bops :
+                op['param'] = subB['OPERATIONS'][sigma]['param']
+                pre1 = "( " + getPre(subB['OPERATIONS'][sigma]['PRE']) + " )" 
+                then1 = getThen(subB['OPERATIONS'][sigma]['THEN'])
+                op['PRE'].append(pre1) 
+                op['THEN'].append((pre1,then1))                        
+            else :
+                op['param'] = subC['OPERATIONS'][sigma]['param']
+                pre2 = "( " + getPre(subC['OPERATIONS'][sigma]['PRE']) + " )"
+                then2 = getThen(subC['OPERATIONS'][sigma]['THEN'])
+                op['PRE'].append(pre2)
+                op['THEN'].append((pre2,then2))  
+            machine['OPERATIONS'][sigma] = op
+
         return machine
         
     def __str__(self):
