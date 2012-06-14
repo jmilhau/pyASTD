@@ -34,17 +34,18 @@ class Automaton(ASTD):
         for the astd to be in a final state """
         n = self.getName()
         finalp = "true"
-        finalp += " & ".join(map(lambda x:"State_" + n + " = " + x,list(self._SF)))        
+        finalp += " or ".join(map(lambda x:"State_" + n + " = " + x,list(self._SF)))        
         for s in list(self._DF):
             p = self._v[s].getBfinal()
             if p != "true":
-                finalp += " & ( " + p + " )"
+                finalp += " & ( State_" + n + " = " + s +" => " + p + " )"
             elif self._v[s].getType() == "elem" :
-                finalp += " & State_" + n + " = " + s
+                finalp += " or State_" + n + " = " + s
         finalp = finalp.replace("true & ","")
         finalp = finalp.replace(" & true","")
+        finalp = finalp.replace("true or ","")
+        finalp = finalp.replace(" or true","")
         return finalp
-           
     
     def addState(self,i) :
         """ Adds a state to the ASTD
