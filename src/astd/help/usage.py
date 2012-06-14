@@ -1,0 +1,52 @@
+import astd
+
+# AUTOMATON
+#input("Automate...")
+#s0 = astd.Elem('s0')
+#s1 = astd.Elem('s1')
+#s2 = astd.Elem('s2')
+#s3 = astd.Elem('s3')
+#s5 = astd.Elem('s5')
+#s6 = astd.Elem('s6')
+#s7 = astd.Elem('s7')
+#s4 = astd.Automaton(s5,"s4")
+#s4.addState(s6)
+#s4.addDFState(s7)
+#s4.addLocalTransition(s5,s6,('e2',))
+#s4.addLocalTransition(s6,s7,('e3',))
+#a1 = astd.Automaton(s0,"a1")
+#a1.addState(s1)
+#a1.addState(s2)
+#a1.addDFState(s3)
+#a1.addState(s4)
+#a1.addLocalTransition(s0,s4,('e1','x'))
+#a1.addLocalTransition(s0,s1,('e9',),'x > 1')
+#a1.addLocalTransition(s1,s1,('e10',))
+#a1.addLocalTransition(s4,s1,('e8',))
+#a1.addLocalTransition(s4,s3,('e4',),final=True)
+#a1.addToSubTransition(s1,s4,s6,('e6',))
+#a1.addFromSubTransition(s4,s6,s2,('e5',))
+#a1.Bprint()
+
+# Sequence
+#input("Sequence...")
+
+s1 = astd.Elem('s1')
+s2 = astd.Elem('s2')
+s3 = astd.Elem('s3')
+s4 = astd.Elem('s4')
+
+a = astd.Automaton(s1,"a")
+a.addDFState(s2)
+a.addLocalTransition(s1,s2,('e1',))
+a.addLocalTransition(s2,s2,('e2',))
+b = astd.Automaton(s3,"b")
+b.addDFState(s4)
+b.addLocalTransition(s3,s4,('e3',))
+c = astd.Sequence(a,b,"c")
+c.Bprint()
+
+# KLEENE
+#input("Kleene...")
+#a2 = astd.Kleene(a1,"a2")
+#a2.Bprint()
