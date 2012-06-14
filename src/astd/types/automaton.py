@@ -179,10 +179,13 @@ class Automaton(ASTD):
                 if x[5] != True :
                     pre += " & " + x[5]
                 if x[6] == True :
-                    pre += " & " + self._v[x[1]].getBfinal()                
+                    pre += " & " + self._v[x[1]].getBfinal()
+                for param in x[4][1:] :
+                    pre += " & TYPAGE DE " + param                      
                 op['PRE'].append(pre)                
                 op['THEN'].append((pre,then))            
-            op['param'] = x[4][1:]    
+            op['param'] = x[4][1:]  
+            
             op['name'] = x[4][0]    
             machine['OPERATIONS'][op['name']] = op
         machine['OPERATIONS'] = mergeOperations(machine['OPERATIONS'],submachines['OPERATIONS'])
