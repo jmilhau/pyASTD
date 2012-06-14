@@ -35,9 +35,8 @@ class Choice(ASTD):
             ifc.replace(k, v)
 
         f1 = "((State_" + self.getName() + " = none) => ( "+ifb+" & "+ifc+" ))&\n" 
-        f1 += "((State_" + self.getName() + " = leftS) => "+ib+" )&\n"        
-        f1 += "((State_" + self.getName() + " = rightS) => "+ic+" )&\n"        
-
+        f1 += "((State_" + self.getName() + " = leftS) => "+fb+" )&\n"        
+        f1 += "((State_" + self.getName() + " = rightS) => "+fc+" )&\n"        
         return f1
     
     def toB(self):

@@ -24,10 +24,13 @@ class Sequence(ASTD):
         """ Returns a predicate that must hold in order 
         for the astd to be in a final state """
         pb = self.b.getBfinal()
-        finalp = "((State_" + self.getName() + " = fst) => "+pb+")" 
-        pc = self.c.getBfinal()
-        if pc != "true":
-                finalp = "("+pc+") & " + finalp
+        pc = self.C.getBfinal()
+        pcinit = self.C.getBfinal()
+        i = self.c.getInit()        
+        for k, v in i.items():
+            map(lambda x: x.replace(k, v),subpre2)            
+        finalp = "((State_" + self.getName() + " = fst) => (("+pb+") & ("+pcinit+")))&\n" 
+        finalp += "((State_" + self.getName() + " = snd) => ("++"))" 
         return finalp
     
     def toB(self):
