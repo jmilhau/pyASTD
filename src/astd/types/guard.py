@@ -23,13 +23,17 @@ class Guard(ASTD):
     def getBfinal(self) :
         """ Returns a predicate that must hold in order 
         for the astd to be in a final state """
-        # TODO
-        finalp = "State_" + self.getName() + " = checked" 
+        p = self.b.getBfinal()       
+        pinit = self.b.getBfinal()
+        i = self.b.getInit()            
+        for k, v in i.items():
+            pinit.replace(k, v)               
+        finalp = "(State_" + self.getName() + " = notchecked => "+ pinit +" )&\n"
+        finalp += "(State_" + self.getName() + " = checked => "+ p +" )"
         return finalp
     
     def toB(self):
         """ Returns a dict that represents the translation of the astd into a B machine"""
-        # TODO
         n = self.getName()        
         sub = self.b.toB()
                     
@@ -43,6 +47,36 @@ class Guard(ASTD):
         machine['INITIALISATION'] =  sub['INITIALISATION'] + [ "State_" + n + " := notchecked" ]               
         machine['OPERATIONS'] =  {}        
 
+        for subopname,subop in sub['OPERATIONS'].items():
+            op = {}
+            op['param'] = subop['param']   
+            op['name'] = subop['name']
+            op['PRE'] = []
+            op['THEN'] = []                   
+            
+            f = self.b.getBfinal()
+            i = self.b.getInit()
+            
+            subprei = list(subop['PRE'])
+            subthen = getThen(subop['THEN'])
+            subtheni = getThen(subop['THEN'])
+            for k, v in i.items():
+                map(lambda x: x.replace(k, v),subprei)
+                subtheni.replace(":= "+k, ":= "+v)
+            pre = "(("+ self.g +") & State_" + n + " = notchecked &"            
+            if len(subprei)>1:
+                pre += "(" + " or ".join(subprei) + ")"                        
+            else :
+                pre += "".join(subprei)
+            pre +=")"    
+            op['PRE'].append(pre)           
+            op['PRE'].append(getPre(subop['PRE']))            
+
+            op['THEN'].append((pre,"State_" + n + " := checked ||\n"+subtheni))
+            op['THEN'].append((getPre(subop['PRE']),subthen))
+                        
+            machine['OPERATIONS'][subopname] = op 
+            
         return machine        
         
     def __str__(self):
