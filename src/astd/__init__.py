@@ -5,4 +5,5 @@ from .types.sequence import *
 from .types.choice import *
 from .types.synchronization import *
 from .types.guard import *
+from .types.call import *
 from .types.elem import *
