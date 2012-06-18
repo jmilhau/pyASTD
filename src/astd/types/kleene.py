@@ -64,7 +64,7 @@ class Kleene(ASTD):
             else :
                 pre += "".join(subpre)
                 
-            op['PRE'].append(pre)           
+            op['PRE'].append("("+pre+")")           
             op['PRE'].append(getPre(subop['PRE']))            
 
             op['THEN'].append((pre,"State_" + n + " := started ||\n"+subthen))
@@ -79,6 +79,3 @@ class Kleene(ASTD):
         txt += "   Sub ASTD : " + self.b._name + " of type " + self.b._t +"\n"
         txt += "End of " + self._name        
         return txt
-        
-    
-      

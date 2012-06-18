@@ -84,15 +84,15 @@ class Choice(ASTD):
             else :
                 pre1 = "".join(preB1)
                 
-            pre1 = "( State_" + n + " = none & ("+ pre1 +") )"                  
-            pre3 = "( State_" + n + " = leftS & ("+ preB3 +") )"                  
+            pre1 = "State_" + n + " = none & ("+ pre1 +")"                  
+            pre3 = "State_" + n + " = leftS & ("+ preB3 +")"                  
             
             then1 = "State_" + n + " := leftS ||\n"+ thenB1 
             then3 = thenB3
                        
-            op['PRE'].append(pre1)           
+            op['PRE'].append("("+pre1+")")           
             op['THEN'].append((pre1,then1))
-            op['PRE'].append(pre3)           
+            op['PRE'].append("("+pre3+")")           
             op['THEN'].append((pre3,then3))
 
             machine['OPERATIONS'][subopname] = op 
@@ -122,15 +122,15 @@ class Choice(ASTD):
             else :
                 pre2 = "".join(preC2)
                 
-            pre2 = "( State_" + n + " = none & ("+ pre2 +") )"                  
-            pre4 = "( State_" + n + " = rightS & ("+ preC4 +") )"                  
+            pre2 = "State_" + n + " = none & ("+ pre2 +")"                  
+            pre4 = "State_" + n + " = rightS & ("+ preC4 +")"                  
             
             then2 = "State_" + n + " := rightS ||\n"+ thenC2 
             then4 = thenC4
                        
-            op['PRE'].append(pre2)           
+            op['PRE'].append("("+pre2+")")           
             op['THEN'].append((pre2,then2))
-            op['PRE'].append(pre4)           
+            op['PRE'].append("("+pre4+")")           
             op['THEN'].append((pre4,then4))
 
             machine['OPERATIONS'][subopname] = op 

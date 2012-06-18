@@ -71,19 +71,18 @@ class Call(ASTD):
                 map(lambda x: x.replace(k, v),subpre)
                 map(lambda x: x.replace(k, v),subprei)
                 subtheni.replace(":= "+k, ":= "+v)            
-            pre = "( State_" + n + " = notcalled & "            
+            pre = "State_" + n + " = notcalled & "            
             if len(subprei)>1:
                 pre += "(" + " or ".join(subprei) + ")"                        
             else :
                 pre += "".join(subprei)
-            pre +=")"    
             if len(subpre)>1:
-                pre2 = "(" + " or ".join(subprei) + ")"                        
+                pre2 = " or ".join(subprei)
             else :
                 pre2 = "".join(subprei)
 
-            op['PRE'].append(pre)           
-            op['PRE'].append(pre2)            
+            op['PRE'].append("("+pre+")")           
+            op['PRE'].append("("+pre2+")")            
 
             op['THEN'].append((pre,"State_" + n + " := called ||\n"+subtheni))
             op['THEN'].append((pre2,subthen))

@@ -65,10 +65,10 @@ class Sequence(ASTD):
             op['THEN'] = []  
                         
             subpreB = getPre(subop['PRE'])                        
-            pre1 = "( State_" + n + " = fst & ("+ subpreB +"))"                  
+            pre1 = "State_" + n + " = fst & ("+ subpreB +")"                  
             subthen1 = getThen(subop['THEN'])
            
-            op['PRE'].append(pre1)           
+            op['PRE'].append("("+pre1+")")           
             op['THEN'].append((pre1,subthen1))
             machine['OPERATIONS'][subopname] = op 
 
@@ -95,15 +95,15 @@ class Sequence(ASTD):
                 map(lambda x: x.replace(k, v),subpre2)
                 subthen2.replace(":= "+k, ":= "+v)
 
-            pre2 = "( State_" + n + " = fst &\n("+ self.b.getBfinal() +") &\n("+ pre2 +"))"
+            pre2 = "State_" + n + " = fst &\n("+ self.b.getBfinal() +") &\n("+ pre2 +")"
             subpre3 = getPre(subop['PRE'])            
-            pre3 = "( State_" + n + " = snd & ("+ subpre3 +"))"                  
+            pre3 = "State_" + n + " = snd & ("+ subpre3 +")"                  
             subthen3 = getThen(subop['THEN'])
 
-            op['PRE'].append(pre2)           
+            op['PRE'].append("("+pre2+")")           
             op['THEN'].append((pre2,"State_" + n + " := snd ||\n"+subthen2))
 
-            op['PRE'].append(pre3)           
+            op['PRE'].append("("+pre3+")")           
             op['THEN'].append((pre3,subthen3))
 
             machine['OPERATIONS'][subopname] = op 

@@ -57,9 +57,9 @@ class Synchronization(ASTD):
             op['name'] = sigma
             op['PRE'] = []
             op['THEN'] = []
-            pre = "( " + getPre(subB['OPERATIONS'][sigma]['PRE']) + " ) &\n( " + getPre(subC['OPERATIONS'][sigma]['PRE']) + " )"
+            pre =  getPre(subB['OPERATIONS'][sigma]['PRE']) + " ) &\n( " + getPre(subC['OPERATIONS'][sigma]['PRE'])
             then = getThen(subB['OPERATIONS'][sigma]['THEN'])+" ||\n"+getThen(subC['OPERATIONS'][sigma]['THEN'])            
-            op['PRE'].append(pre) 
+            op['PRE'].append("("+pre+ ")") 
             op['THEN'].append((pre,then))                        
             machine['OPERATIONS'][sigma] = op 
             
@@ -81,25 +81,25 @@ class Synchronization(ASTD):
             op['THEN'] = []
             if sigma in BCops :
                 op['param'] = subB['OPERATIONS'][sigma]['param']
-                pre1 = "( " + getPre(subB['OPERATIONS'][sigma]['PRE']) + " )" 
-                pre2 = "( " + getPre(subC['OPERATIONS'][sigma]['PRE']) + " )"
+                pre1 =  getPre(subB['OPERATIONS'][sigma]['PRE']) 
+                pre2 =  getPre(subC['OPERATIONS'][sigma]['PRE'])
                 then1 = getThen(subB['OPERATIONS'][sigma]['THEN'])
                 then2 = getThen(subC['OPERATIONS'][sigma]['THEN'])
-                op['PRE'].append(pre1) 
-                op['PRE'].append(pre2)
+                op['PRE'].append("(" +pre1+ ")" ) 
+                op['PRE'].append("(" +pre2+ ")" )
                 op['THEN'].append((pre1,then1))                        
                 op['THEN'].append((pre2,then2))                        
             elif sigma in Bops :
                 op['param'] = subB['OPERATIONS'][sigma]['param']
-                pre1 = "( " + getPre(subB['OPERATIONS'][sigma]['PRE']) + " )" 
+                pre1 = getPre(subB['OPERATIONS'][sigma]['PRE']) 
                 then1 = getThen(subB['OPERATIONS'][sigma]['THEN'])
-                op['PRE'].append(pre1) 
+                op['PRE'].append("(" + pre1+ ")" ) 
                 op['THEN'].append((pre1,then1))                        
             else :
                 op['param'] = subC['OPERATIONS'][sigma]['param']
-                pre2 = "( " + getPre(subC['OPERATIONS'][sigma]['PRE']) + " )"
+                pre2 =  getPre(subC['OPERATIONS'][sigma]['PRE']) 
                 then2 = getThen(subC['OPERATIONS'][sigma]['THEN'])
-                op['PRE'].append(pre2)
+                op['PRE'].append("(" +pre2+ ")")
                 op['THEN'].append((pre2,then2))  
             machine['OPERATIONS'][sigma] = op
 

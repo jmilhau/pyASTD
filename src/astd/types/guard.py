@@ -63,13 +63,12 @@ class Guard(ASTD):
             for k, v in i.items():
                 map(lambda x: x.replace(k, v),subprei)
                 subtheni.replace(":= "+k, ":= "+v)
-            pre = "(("+ self.g +") & State_" + n + " = notchecked & "            
+            pre = "("+ self.g +") & State_" + n + " = notchecked & "            
             if len(subprei)>1:
                 pre += "(" + " or ".join(subprei) + ")"                        
             else :
                 pre += "".join(subprei)
-            pre +=")"    
-            op['PRE'].append(pre)           
+            op['PRE'].append("("+pre+")")           
             op['PRE'].append(getPre(subop['PRE']))            
 
             op['THEN'].append((pre,"State_" + n + " := checked ||\n"+subtheni))
