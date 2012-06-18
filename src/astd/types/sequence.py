@@ -24,8 +24,8 @@ class Sequence(ASTD):
         """ Returns a predicate that must hold in order 
         for the astd to be in a final state """
         pb = self.b.getBfinal()
-        pc = self.C.getBfinal()
-        pcinit = self.C.getBfinal()
+        pc = self.c.getBfinal()
+        pcinit = self.c.getBfinal()
         i = self.c.getInit()        
         for k, v in i.items():
             pcinit.replace(k, v)
