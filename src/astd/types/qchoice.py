@@ -4,11 +4,11 @@ class qChoice(ASTD):
     """An qchoice ASTD class"""    
     _t = "kle"
         
-    def __init__(self, b, x, t newname="" ) :
+    def __init__(self, b, x, t, newname="" ) :
         """ Constructor for a qchoice ASTD
         b -- astd that is the operand of the qchoice ASTD (mandatory)
         x -- variable name of the qchoice (mandatory)
-        t -- set of the quantified variable (mandatory)
+        t -- set of the quantified variable values (mandatory)
         newName -- name of the elem ASTD to be constructed """
         super().__init__(newname)
         self.b = b
@@ -35,8 +35,6 @@ class qChoice(ASTD):
         finalp = "((State_" + self.getName() + " = notchosen) => ( #vv. ( vv : T_" + self.getName() +" & ("+pbi+"))))&\n" 
         finalp += "((State_" + self.getName() + " = chosen) => ( "+pb+" ))&\n" 
         return finalp
-
- 
     
     def toB(self):
         """ Returns a dict that represents the translation of the astd into a B machine"""
@@ -44,14 +42,9 @@ class qChoice(ASTD):
         sub = self.b.toB()
                     
         machine = {}
-        machine['MACHINE'] = n
+        machine['MACHINE'] = n       
         
-        values = [0,1,2,3,4,5,6,7,8,9]
-        values = list(map(lambda y: self.x+str(y),values))
-        values = list(map(lambda y: "x"+str(y),values))
-        values = ",".join(values)
-        
-        machine['SETS'] = sub['SETS'] + ["T_" + self.getName()+" = {"+values+"}"]        
+        machine['SETS'] = sub['SETS'] + ["T_" + self.getName()+" = "+t]        
         if sub['SETS'].count("qChoiceState = {chosen , notchosen}") == 0 :
             machine['SETS'] += ["qChoiceState = {chosen , notchosen}"]                          
         machine['VARIABLES'] = sub['VARIABLES'] + [ "State_" + n ]
@@ -60,6 +53,46 @@ class qChoice(ASTD):
         machine['INVARIANT'] = sub['INVARIANT'] + [ "Value_" + n + " :  T_" + self.getName() ]
         machine['INITIALISATION'] =  sub['INITIALISATION'] + [ "State_" + n + " := notchosen" ]               
         machine['OPERATIONS'] =  {}        
+            
+        for subopname,subop in sub['OPERATIONS'].items():
+            op = {}
+            op['param'] = subop['param']   
+            op['name'] = subop['name']
+            op['PRE'] = []
+            op['THEN'] = []       
+            op['TYPE'] = subop['TYPE'] + [ self.x + " :  T_" + self.getName()]
+                                
+            f = self.b.getBfinal()
+            i = self.b.getInit()
+            
+            subpre = getPre(subop['PRE'])
+            subthen = getThen(subop['THEN'])
+
+            subprei = list(subop['PRE'])
+            subtheni = getThen(subop['THEN'])
+
+
+            for k, v in i.items():
+                map(lambda x: x.replace(k, v),subprei)
+                subtheni.replace(":= "+k, ":= "+v)
+
+            pre1 = "State_" + n + " = notchosen &\n"
+            
+            if len(subprei)>1:
+                pre1 += "( " + " or ".join(subprei) + " )"                        
+            else :
+                pre1 += "".join(subprei)
+
+            pre2 = "State_" + n + " = chosen & Value_" + n + " = "+self.x+" &\n"
+            pre2 += subpre
+                
+            op['PRE'].append("("+pre1+")")           
+            op['PRE'].append("("+pre2+")")            
+
+            op['THEN'].append((pre1,"State_" + n + " := chosen ||\n Value_" + n + " := "+self.x+" ||\n"+subtheni))
+            op['THEN'].append((pre2,subthen))
+                        
+            machine['OPERATIONS'][subopname] = op        
             
         return machine        
         
