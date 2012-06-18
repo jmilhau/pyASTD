@@ -68,6 +68,7 @@ class Choice(ASTD):
             op = {}
             op['param'] = subop['param']   
             op['name'] = subop['name']
+            op['TYPE'] = subop['TYPE']
             op['PRE'] = []
             op['THEN'] = []  
                         
@@ -102,12 +103,14 @@ class Choice(ASTD):
         for subopname,subop in subC['OPERATIONS'].items():
             if subopname in machine['OPERATIONS'] :
                 op = dict(machine['OPERATIONS'][subopname])
+                op['TYPE'] += subop['TYPE']
             else :
                 op = {}
                 op['param'] = subop['param']   
                 op['name'] = subop['name']
                 op['PRE'] = []
                 op['THEN'] = []  
+                op['TYPE'] = subop['TYPE']
 
             preC2 = list(subop['PRE'])                        
             preC4 = getPre(subop['PRE'])                                    

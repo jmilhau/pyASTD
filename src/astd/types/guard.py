@@ -52,7 +52,8 @@ class Guard(ASTD):
             op['param'] = subop['param']   
             op['name'] = subop['name']
             op['PRE'] = []
-            op['THEN'] = []                   
+            op['THEN'] = []  
+            op['TYPE'] = subop['TYPE']                 
             
             f = self.b.getBfinal()
             i = self.b.getInit()

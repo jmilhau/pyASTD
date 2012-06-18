@@ -149,6 +149,7 @@ class Automaton(ASTD):
                     temp['THEN'] = []
                     temp['param'] = ()
                     temp['name'] = k
+                    temp['TYPE'] = []
                     submachines['OPERATIONS'][k] = temp
                 submachines['OPERATIONS'][k] = mergeOperationsWithStates( \
                         submachines['OPERATIONS'][k],n,sub['OPERATIONS'][k],subname)
@@ -169,7 +170,7 @@ class Automaton(ASTD):
             op = {}
             op['PRE'] = []
             op['THEN'] = []
-            
+            op['TYPE'] = []
             for x in [ y for y in self._delta if y[4][0] == sigma ] :
                 pre = "State_" + n + " = " + x[1]
                 then = "State_" + n + " := " + x[3] 
@@ -182,12 +183,13 @@ class Automaton(ASTD):
                 if x[6] == True :
                     pre += " & " + self._v[x[1]].getBfinal()
                 for param in x[4][1:] :
-                    pre += " & TYPAGE DE " + param                      
+                    op['TYPE'].append("TYPAGE DE " + param)
                 op['PRE'].append(pre)                
                 op['THEN'].append((pre,then))            
             op['param'] = x[4][1:]  
             
             op['name'] = x[4][0]    
+
             machine['OPERATIONS'][op['name']] = op
         machine['OPERATIONS'] = mergeOperations(machine['OPERATIONS'],submachines['OPERATIONS'])
         

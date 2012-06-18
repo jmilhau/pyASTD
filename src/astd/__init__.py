@@ -3,6 +3,7 @@ from .types.automaton import *
 from .types.kleene import *
 from .types.sequence import *
 from .types.choice import *
+from .types.qchoice import *
 from .types.synchronization import *
 from .types.guard import *
 from .types.call import *

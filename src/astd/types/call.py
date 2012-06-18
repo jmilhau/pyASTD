@@ -54,6 +54,7 @@ class Call(ASTD):
             op = {}
             op['param'] = subop['param']   
             op['name'] = subop['name']
+            op['TYPE'] = subop['TYPE']
             op['PRE'] = []
             op['THEN'] = []                   
             

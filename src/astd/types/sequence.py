@@ -63,6 +63,7 @@ class Sequence(ASTD):
             op['name'] = subop['name']
             op['PRE'] = []
             op['THEN'] = []  
+            op['TYPE'] = subop['TYPE']
                         
             subpreB = getPre(subop['PRE'])                        
             pre1 = "State_" + n + " = fst & ("+ subpreB +")"                  
@@ -77,13 +78,14 @@ class Sequence(ASTD):
         for subopname,subop in subC['OPERATIONS'].items():
             if subopname in machine['OPERATIONS'] :
                 op = dict(machine['OPERATIONS'][subopname])
+                op['TYPE'] += subop['TYPE']
             else :
                 op = {}
                 op['param'] = subop['param']   
                 op['name'] = subop['name']
                 op['PRE'] = []
                 op['THEN'] = []  
-
+                op['TYPE'] = subop['TYPE']
             subpre2 = list(subop['PRE'])    
             subthen2 = getThen(subop['THEN'])
 
