@@ -57,12 +57,8 @@ class Synchronization(ASTD):
             op['name'] = sigma
             op['PRE'] = []
             op['THEN'] = []
-<<<<<<< HEAD
-            pre =  getPre(subB['OPERATIONS'][sigma]['PRE']) + " ) &\n( " + getPre(subC['OPERATIONS'][sigma]['PRE'])
-=======
             op['TYPE'] = subB['TYPE'] + subC['TYPE']
-            pre = "( " + getPre(subB['OPERATIONS'][sigma]['PRE']) + " ) &\n( " + getPre(subC['OPERATIONS'][sigma]['PRE']) + " )"
->>>>>>> qchoice
+            pre =  getPre(subB['OPERATIONS'][sigma]['PRE']) + " &\n " + getPre(subC['OPERATIONS'][sigma]['PRE'])
             then = getThen(subB['OPERATIONS'][sigma]['THEN'])+" ||\n"+getThen(subC['OPERATIONS'][sigma]['THEN'])            
             op['PRE'].append("("+pre+ ")") 
             op['THEN'].append((pre,then))                        
