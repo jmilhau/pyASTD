@@ -28,9 +28,9 @@ class Sequence(ASTD):
         pcinit = self.C.getBfinal()
         i = self.c.getInit()        
         for k, v in i.items():
-            map(lambda x: x.replace(k, v),subpre2)            
+            pcinit.replace(k, v)
         finalp = "((State_" + self.getName() + " = fst) => (("+pb+") & ("+pcinit+")))&\n" 
-        finalp += "((State_" + self.getName() + " = snd) => ("++"))" 
+        finalp += "((State_" + self.getName() + " = snd) => ("+pc+"))" 
         return finalp
     
     def toB(self):
