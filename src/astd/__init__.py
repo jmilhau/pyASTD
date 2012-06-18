@@ -4,6 +4,7 @@ from .types.kleene import *
 from .types.sequence import *
 from .types.choice import *
 from .types.synchronization import *
+from .types.qsynchronization import *
 from .types.guard import *
 from .types.call import *
 from .types.elem import *
