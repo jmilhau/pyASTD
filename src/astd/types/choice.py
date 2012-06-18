@@ -2,7 +2,7 @@ from .astd import *
 
 class Choice(ASTD):
     """An Choice ASTD class"""    
-    _t = "seq"
+    _t = "cho"
         
     def __init__(self, b, c, newname="" ) :
         """ Constructor for a Choice ASTD
