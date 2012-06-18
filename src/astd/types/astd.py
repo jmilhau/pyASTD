@@ -52,7 +52,8 @@ def mergeOperationsWithStates(op1,n1,op2,n2) :
     result['PRE'] = op1['PRE'] + op2['PRE']
     result['THEN'] = op1['THEN'] + op2['THEN'] 
     result['param'] = op2['param']
-    result['name'] = op2['name']    
+    result['name'] = op2['name']  
+    result['TYPE'] = op1['TYPE'] + op2['TYPE']
     return result    
     
 def sameOpMerge(op1,op2):
@@ -63,6 +64,7 @@ def sameOpMerge(op1,op2):
     result['THEN'] = op1['THEN'] + op2['THEN'] 
     result['param'] = op2['param']
     result['name'] = op2['name']  
+    result['TYPE'] = op1['TYPE'] + op2['TYPE']
     return result
     
 def getThen(opthen,lvl=0) :
