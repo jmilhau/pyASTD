@@ -44,14 +44,15 @@ class qChoice(ASTD):
         machine = {}
         machine['MACHINE'] = n       
         
-        machine['SETS'] = sub['SETS'] + ["T_" + self.getName()+" = "+t]        
+        machine['SETS'] = sub['SETS'] + ["T_" + self.getName()+" = "+self.t]        
         if sub['SETS'].count("qChoiceState = {chosen , notchosen}") == 0 :
             machine['SETS'] += ["qChoiceState = {chosen , notchosen}"]                          
         machine['VARIABLES'] = sub['VARIABLES'] + [ "State_" + n ]
-        machine['VARIABLES'] = sub['VARIABLES'] + [ "Value_" + n ]
+        machine['VARIABLES'] += [ "Value_" + n ]
         machine['INVARIANT'] = sub['INVARIANT'] + [ "State_" + n + " :  qChoiceState" ]
-        machine['INVARIANT'] = sub['INVARIANT'] + [ "Value_" + n + " :  T_" + self.getName() ]
-        machine['INITIALISATION'] =  sub['INITIALISATION'] + [ "State_" + n + " := notchosen" ]               
+        machine['INVARIANT'] += [ "Value_" + n + " :  T_" + n ]
+        machine['INITIALISATION'] =  sub['INITIALISATION'] + [ "State_" + n + " := notchosen" ] 
+        machine['INITIALISATION'] += [ "Value_" + n + " :: T_" + n ]               
         machine['OPERATIONS'] =  {}        
             
         for subopname,subop in sub['OPERATIONS'].items():
@@ -76,15 +77,14 @@ class qChoice(ASTD):
                 map(lambda x: x.replace(k, v),subprei)
                 subtheni.replace(":= "+k, ":= "+v)
 
-            pre1 = "State_" + n + " = notchosen &\n"
+            pre1 = "State_" + n + " = notchosen"
             
-            if len(subprei)>1:
-                pre1 += "( " + " or ".join(subprei) + " )"                        
-            else :
-                pre1 += "".join(subprei)
-
-            pre2 = "State_" + n + " = chosen & Value_" + n + " = "+self.x+" &\n"
-            pre2 += subpre
+            if len(subprei)>0:
+                pre1 += " &\n( " + " or ".join(subprei) + " )"                        
+                
+            pre2 = "State_" + n + " = chosen & Value_" + n + " = "+self.x
+            if len(subpre)>0 :
+                pre2 += " &\n"+subpre
                 
             op['PRE'].append("("+pre1+")")           
             op['PRE'].append("("+pre2+")")            

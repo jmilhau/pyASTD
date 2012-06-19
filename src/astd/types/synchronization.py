@@ -57,7 +57,7 @@ class Synchronization(ASTD):
             op['name'] = sigma
             op['PRE'] = []
             op['THEN'] = []
-            op['TYPE'] = subB['TYPE'] + subC['TYPE']
+            op['TYPE'] = subB['OPERATIONS'][sigma]['TYPE'] + subC['OPERATIONS'][sigma]['TYPE']
             pre =  getPre(subB['OPERATIONS'][sigma]['PRE']) + " &\n " + getPre(subC['OPERATIONS'][sigma]['PRE'])
             then = getThen(subB['OPERATIONS'][sigma]['THEN'])+" ||\n"+getThen(subC['OPERATIONS'][sigma]['THEN'])            
             op['PRE'].append("("+pre+ ")") 
@@ -68,10 +68,10 @@ class Synchronization(ASTD):
             op = {}
             if sigma in Bops :
                 op['param'] = subB['OPERATIONS'][sigma]['param']  
-                op['TYPE'] = subB['TYPE']
+                op['TYPE'] = subB['OPERATIONS'][sigma]['TYPE']
             else :
                 op['param'] = subC['OPERATIONS'][sigma]['param']
-                op['TYPE'] = subC['TYPE']
+                op['TYPE'] = subC['OPERATIONS'][sigma]['TYPE']
             op['name'] = sigma
             op['PRE'] = ["false"]
             op['THEN'] = [("false","skip")]
@@ -83,7 +83,7 @@ class Synchronization(ASTD):
             op['PRE'] = []
             op['THEN'] = []
             if sigma in BCops :
-                op['TYPE'] = subB['TYPE'] + subC['TYPE']
+                op['TYPE'] = subB['OPERATIONS'][sigma]['TYPE'] + subC['OPERATIONS'][sigma]['TYPE']
                 op['param'] = subB['OPERATIONS'][sigma]['param']
                 pre1 =  getPre(subB['OPERATIONS'][sigma]['PRE']) 
                 pre2 =  getPre(subC['OPERATIONS'][sigma]['PRE'])
@@ -94,14 +94,14 @@ class Synchronization(ASTD):
                 op['THEN'].append((pre1,then1))                        
                 op['THEN'].append((pre2,then2))                        
             elif sigma in Bops :
-                op['TYPE'] = subB['TYPE']
+                op['TYPE'] = subB['OPERATIONS'][sigma]['TYPE']
                 op['param'] = subB['OPERATIONS'][sigma]['param']
                 pre1 = getPre(subB['OPERATIONS'][sigma]['PRE']) 
                 then1 = getThen(subB['OPERATIONS'][sigma]['THEN'])
                 op['PRE'].append("(" + pre1+ ")" ) 
                 op['THEN'].append((pre1,then1))                        
             else :
-                op['TYPE'] = subC['TYPE']
+                op['TYPE'] = subC['OPERATIONS'][sigma]['TYPE']
                 op['param'] = subC['OPERATIONS'][sigma]['param']
                 pre2 =  getPre(subC['OPERATIONS'][sigma]['PRE']) 
                 then2 = getThen(subC['OPERATIONS'][sigma]['THEN'])

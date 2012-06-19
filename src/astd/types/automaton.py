@@ -182,8 +182,8 @@ class Automaton(ASTD):
                     pre += " & " + x[5]
                 if x[6] == True :
                     pre += " & " + self._v[x[1]].getBfinal()
-                for param in x[4][1:] :
-                    op['TYPE'].append("TYPAGE DE " + param)
+#                for param in x[4][1:] :
+#                    op['TYPE'].append("TYPAGE DE " + param)
                 op['PRE'].append(pre)                
                 op['THEN'].append((pre,then))            
             op['param'] = x[4][1:]  
